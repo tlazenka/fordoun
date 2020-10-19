@@ -1,0 +1,25 @@
+version: '2'
+services:
+  app:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    command: gradle linuxTest 
+    volumes_from:
+     - caches
+  
+  format:
+    image: kkopper/ktlint:0.38.1
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: ktlint -F
+
+  caches:
+    image: centos:7
+    volumes:
+      - ~/.gradle:/home/gradle/.gradle:rw
+      - ~/.konan:/root/.konan:rw
+
