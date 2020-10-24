@@ -80,4 +80,14 @@ class DoTest {
                 }
         }
     }
+
+    @Test
+    fun testInvalidDoBlockThrowsAssertionError() {
+        class UnexpectedException : Exception()
+        assertFailsWith<AssertionError> {
+            val result: Result<Any> =
+                `do` {
+                }
+        }
+    }
 }
