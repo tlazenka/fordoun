@@ -28,8 +28,6 @@ fun sequence(@BuilderInference block: suspend DoController.() -> Unit): Sequence
 open class SequenceCoroutine<T> : AbstractIterator<T>(), SequenceScope<T>, Continuation<Unit> {
     lateinit var nextStep: Continuation<Unit>
 
-    var yielded: T? = null
-
     // AbstractIterator implementation
     override fun computeNext() { nextStep.resume(Unit) }
 
@@ -43,7 +41,6 @@ open class SequenceCoroutine<T> : AbstractIterator<T>(), SequenceScope<T>, Conti
 
     // Generator implementation
     override suspend fun yield(value: T) {
-        this.yielded = value
         setNext(value)
         return suspendCoroutine { cont -> nextStep = cont }
     }
@@ -65,18 +62,18 @@ inline fun <reified T> `do`(noinline block: suspend DoController.() -> Unit): Re
     throw AssertionError("Invalid do block")
 }
 
-fun <T> returns(t: T): Result<T> {
-    return Result.success(value = t)
+fun <T> returns(value: T): Result<T> {
+    return Result.success(value = value)
 }
 
 class DoController : SequenceCoroutine<Any>() {
-    suspend fun <T> returns(t: T) {
-        this.yield(value = t as Any)
+    suspend fun <T> returns(value: T) {
+        this.yield(value = value as Any)
     }
 
-    suspend fun <T> bind(m: Result<T>): T {
-        this.yield(value = m)
+    suspend fun <T> bind(value: Result<T>): T {
+        this.yield(value = value)
         @Suppress("UNCHECKED_CAST")
-        return (this.yielded as Result<T>).getOrThrow()
+        return value.getOrThrow()
     }
 }
