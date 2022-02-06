@@ -1,4 +1,6 @@
 import fordoun.`do`
+import fordoun.bind
+import fordoun.returns
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
