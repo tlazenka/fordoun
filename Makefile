@@ -6,6 +6,10 @@ test:
 test-docker:
 	docker-compose run --rm app ./gradlew --rerun-tasks allTest
         
+.PHONY: js-export
+js-export:
+	./gradlew jsBrowserProductionLibraryDistribution
+
 .PHONY: format
 format:
 	docker-compose run --rm format

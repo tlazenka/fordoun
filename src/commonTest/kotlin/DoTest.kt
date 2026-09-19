@@ -1,5 +1,5 @@
-import fordoun.`do`
 import fordoun.bind
+import fordoun.`do`
 import fordoun.returns
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -72,14 +72,13 @@ class DoTest {
     fun testException() {
         class UnexpectedException : Exception()
         assertFailsWith<UnexpectedException> {
-            val result: Result<Any> =
-                `do` {
-                    val result1 = bind(fordoun.returns(1))
-                    val result2 = bind(fordoun.returns(2))
-                    throw UnexpectedException()
-                    val result3 = bind(fordoun.returns(3))
-                    returns(result1 * result3)
-                }
+            val result: Result<Any> = `do` {
+                val result1 = bind(fordoun.returns(1))
+                val result2 = bind(fordoun.returns(2))
+                throw UnexpectedException()
+                val result3 = bind(fordoun.returns(3))
+                returns(result1 * result3)
+            }
         }
     }
 
@@ -87,9 +86,7 @@ class DoTest {
     fun testInvalidDoBlockThrowsAssertionError() {
         class UnexpectedException : Exception()
         assertFailsWith<AssertionError> {
-            val result: Result<Any> =
-                `do` {
-                }
+            val result: Result<Any> = `do` {}
         }
     }
 }
