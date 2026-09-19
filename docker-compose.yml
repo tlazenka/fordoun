@@ -8,14 +8,16 @@ services:
       - .:/app
     command: gradle linuxTest 
     volumes_from:
-     - caches
+      - caches
   
   format:
-    image: kkopper/ktlint:0.38.1
+    build:
+        context: .
+        dockerfile: Dockerfile.ktfmt
     volumes:
       - .:/app
     working_dir: /app
-    command: ktlint -F
+    command: java -jar /usr/local/bin/kfmt.jar --kotlinlang-style .
 
   caches:
     image: centos:7
